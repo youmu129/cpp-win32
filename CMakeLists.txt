@@ -42,6 +42,8 @@ install(FILES
     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
     DESTINATION ${PROJECT_NAME}/cmake
 )
-install(DIRECTORY "${PROJECT_SOURCE_DIR}/include/win32" 
+install(DIRECTORY
+    "${PROJECT_SOURCE_DIR}/include/win32" 
+    "${PROJECT_SOURCE_DIR}/cppwin32/include/win32"
     DESTINATION ${PROJECT_NAME}/include
 )

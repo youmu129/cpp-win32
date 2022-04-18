@@ -38,7 +38,7 @@ namespace win32
     struct win32_error
     {
         error_code code;
-        
+
 
         win32_error(error_code code) : code(code) {}
     };
@@ -53,15 +53,36 @@ namespace win32
         throw win32_error{code};
     }
 
+    void throw_last_win32()
+    {
+        error_code code = _impl::GetLastError();
+        //if (code != _impl::ERROR_SUCCESS)
+        {
+            throw_win32(code);
+        } 
+    }
+
     inline void check_bool(_impl::BOOL value)
     {
         if (!is_true(value))
         {
-            error_code code = _impl::GetLastError();
-            if (code != _impl::ERROR_SUCCESS)
-            {
-                throw_win32(code);
-            } 
+            throw_last_win32
+        }
+    }
+
+    inline void check_expr(bool value)
+    {
+        if (!value)
+        {
+            throw_win32(_impl::ERROR_ASSERTION_FAILURE);
+        }
+    }
+
+    inline void check_handle(_impl::HANDLE handle)
+    {
+        if (handle.Value == 0)
+        {
+            throw_last_win32();
         }
     }
 }
